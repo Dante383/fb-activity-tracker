@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import argparse, os, sqlite3, json, datetime, time, webbrowser
+import argparse, os, sqlite3, json, datetime, time, webbrowser, sys
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 class ReportGenerator:
@@ -104,6 +104,9 @@ class ReportGenerator:
 		if (not os.path.exists(self.args['db'])):
 			print('Error: Database does not exists! Exitting..')
 			sys.exit(1)
+
+		if (not os.path.exists('reports')):
+			os.mkdir('reports')
 
 		self.connection = sqlite3.connect(self.args['db'])
 		self.cursor = self.connection.cursor()
