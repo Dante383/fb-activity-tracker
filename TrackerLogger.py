@@ -44,7 +44,7 @@ class TrackerLogger:
 
 		self.connection.execute("UPDATE user_info SET info = '{}' WHERE id = {}".format(userData, userId))
 		self.connection.commit()
-		print(self.connection.cursor().rowcount)
+
 		if (self.connection.cursor().rowcount != -1):
 			self.connection.execute("INSERT INTO user_info (id, info) VALUES ({}, '{}')".format(userId, userData))
 			self.connection.commit()
