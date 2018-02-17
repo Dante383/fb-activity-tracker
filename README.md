@@ -50,3 +50,5 @@ python generate-report.py --users=facebook_user_id,facebook_user_id,facebook_use
 ## Preview 
 
 ![Example chart](https://i.imgur.com/QzieenK.png)
+
+![Example user data](https://i.imgur.com/DJ6KcRM.png)
