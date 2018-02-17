@@ -46,3 +46,7 @@ Generate report for multiple users. Pass users id separated by commas or 'all' t
 ```
 python generate-report.py --users=facebook_user_id,facebook_user_id,facebook_user_id
 ```
+
+## Preview 
+
+![Example chart](https://i.imgur.com/QzieenK.png)
