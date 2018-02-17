@@ -1,0 +1,90 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<title>FB Activity Tracker Report</title>
+		<meta id="updates" data-updates="{{updates}}">
+		<style>
+			.container
+			{
+				text-align: center;
+			}
+			span 
+			{
+				display: block;
+				padding: 4px 4px 4px 4px;
+			}
+			.user-name b
+			{
+				margin-left: 4px;
+			}
+			.card 
+			{
+				width: 50%;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h2>User data</h2>
+			<div class="user-data">
+				<div class="card">
+					<div class="card-body">
+						<span class="user-name"><img src="{{ userdata.photo }}" class="user-photo"><b>{{userdata.name}}</b></span>
+						<span class="user-gender">Gender: {{userdata.gender}}</span>
+						<span class="user-isfriend">Is friend?: {{ userdata.is_friend }}</span>
+						<span class="user-lastmessage">Last message timestamp: {{ userdata.last_message_timestamp }}</span>
+						<span class="user-url">Profile URL: <a href="{{ userdata.url }}">{{ userdata.url }}</a></span>
+					</div>
+				</div>
+			</div>
+			<h2>Charts</h2>
+			<div class="charts">
+				<canvas id="user-chart"></canvas>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script>
+			var updates = JSON.parse(document.getElementById('updates').dataset.updates);
+			var processed_updates = [];
+			updates.forEach(function(val){
+				processed_updates.push({x: new Date(val[0]*1000), y: val[1]});
+			});
+
+			var ctx = document.getElementById('user-chart').getContext('2d');
+			var myChart = new Chart(ctx, {
+			    type: 'line',
+			    data: {
+			    	datasets: [{
+			    		label: "User is active",
+			    		data: processed_updates
+			    	}]
+			   	},
+			    options: {
+					responsive: true,
+					title:{
+						display:true,
+						text:"Chart.js Time Point Data"
+					},
+					scales: {
+						xAxes: [{
+							type: "time",
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Date'
+							},
+	                        ticks: {
+	                            major: {
+	                                fontStyle: "bold",
+	                                fontColor: "#FF0000"
+	                            }
+	                        }
+						}]
+					}
+				}
+			});		
+		</script>
+	</body>
+</html>

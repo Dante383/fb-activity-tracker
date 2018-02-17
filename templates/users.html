@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<title>FB Activity Tracker Report</title>
+		<meta id="data" data-data="{{users_json}}">
+		<style>
+			.container
+			{
+				text-align: center;
+			}
+			span 
+			{
+				display: block;
+				padding: 4px 4px 4px 4px;
+			}
+			.user-name b
+			{
+				margin-left: 4px;
+			}
+			.card 
+			{
+				width: 50%;
+				margin: 0 auto 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h2>User data</h2>
+			{% for user in users %}
+				<div class="card">
+					<div class="card-body">
+						<div class="user-data">
+							<span class="user-name"><img src="{{ user.userdata.photo }}" class="user-photo"><b>{{user.userdata.name}}</b></span>
+							<span class="user-gender">Gender: {{user.userdata.gender}}</span>
+							<span class="user-isfriend">Is friend?: {{ user.userdata.is_friend }}</span>
+							<span class="user-lastmessage">Last message timestamp: {{ user.userdata.last_message_timestamp }}</span>
+							<span class="user-url">Profile URL: <a href="{{ user.userdata.url }}">{{ user.userdata.url }}</a></span>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+			<h2>Charts</h2>
+			<div class="charts">
+				<canvas id="user-chart"></canvas>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script>
+			var users = JSON.parse(document.getElementById('data').dataset.data);
+			var data = [];
+
+			users.forEach(function(val){
+
+				var processed_updates = [];
+				var updates = JSON.parse(val.updates);
+				var random_color = 'rgba(' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ', 1)';
+
+				updates.forEach(function(val){
+					processed_updates.push({x: new Date(val[0]*1000), y: val[1]});
+				});
+
+				data.push({
+					label: val.userdata.name,
+					borderColor: random_color,
+					backgroundColor: random_color,
+					fill: false,
+					data: processed_updates
+				});
+			});
+
+			var ctx = document.getElementById('user-chart').getContext('2d');
+			var myChart = new Chart(ctx, {
+			    type: 'line',
+			    data: {
+			    	datasets: data
+			   	},
+			    options: {
+					responsive: true,
+					title:{
+						display:true,
+						text:"Chart.js Time Point Data"
+					},
+					scales: {
+						xAxes: [{
+							type: "time",
+							display: true,
+							steppedLine: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Date'
+							},
+	                        ticks: {
+	                            major: {
+	                                fontStyle: "bold",
+	                                fontColor: "#FF0000"
+	                            }
+	                        }
+						}]
+					}
+				}
+			});		
+		</script>
+	</body>
+</html>
