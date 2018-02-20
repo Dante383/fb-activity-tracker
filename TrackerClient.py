@@ -28,10 +28,11 @@ class TrackerClient:
 		self.trackerLogger.log(updatedUsers)
 
 		for user, timestamp in updatedUsers:
-			self.trackerLogger.userdata(self.client.fetchUserInfo(user)[user])
+			userInfo = self.client.fetchUserInfo(user)[user]
+			self.trackerLogger.userdata(userInfo)
 
 			if (self.config['env'] == 'dev'): #and time.time() - int(timestamp) < 60): # to save some unneeded requests
-				self.logger.info('{}: {} updated: {}'.format(self.options['username'], self.client.fetchUserInfo(user)[user].name, datetime.datetime.fromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S')))
+				self.logger.info('{}: {} updated: {}'.format(self.options['username'], userInfo.name, datetime.datetime.fromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S')))
 
 	def listen (self):
 		if (not self.client):
