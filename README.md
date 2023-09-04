@@ -1,5 +1,7 @@
 # Facebook Activity Tracker
 
+# WARNING: THIS PROJECT DOES NOT WORK ANYMORE! It relies on the "fbchat" library which is unmaintained and broken due to Facebook API changing. This repository is serving strictly as an archive
+
 This tool will let you track your facebook friends activity habits and generate nice statistics from it. 
 
 Warning: This tool is only Python3 compatibible!
